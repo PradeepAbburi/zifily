@@ -1,0 +1,376 @@
+@import "tailwindcss" source(none);
+@source "../src";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+/*
+ * Design system definition.
+ *
+ * The @theme inline block maps CSS custom properties to Tailwind utility
+ * classes (e.g. --color-primary -> bg-primary, text-primary).
+ *
+ * The :root and .dark blocks define the actual color values using oklch.
+ * All colors MUST use oklch format.
+ *
+ * To add a new semantic color:
+ * 1. Add the variable to :root (light value) and .dark (dark value)
+ * 2. Register it in @theme inline as --color-<name>: var(--<name>)
+ */
+
+@theme inline {
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) + 8px);
+  --radius-3xl: calc(var(--radius) + 12px);
+  --radius-4xl: calc(var(--radius) + 16px);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-ring-offset-background: var(--background);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --color-success: var(--success);
+  --color-success-soft: var(--success-soft);
+  --color-warning-soft: var(--warning-soft);
+  --color-warning: var(--warning);
+  --color-info: var(--info);
+  --color-star: var(--star);
+  --font-sans: "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+}
+
+:root {
+  --radius: 0.875rem;
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.15 0 0);
+  --success: oklch(0.62 0.17 150);
+  --success-soft: oklch(0.94 0.08 150);
+  --warning: oklch(0.6 0.13 75);
+  --warning-soft: oklch(0.95 0.08 95);
+  --info: oklch(0.58 0.2 255);
+  --star: oklch(0.8 0.17 80);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.129 0.042 264.695);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.129 0.042 264.695);
+  --primary: oklch(0.12 0 0);
+  --primary-foreground: oklch(0.99 0 0);
+  --secondary: oklch(0.968 0.007 247.896);
+  --secondary-foreground: oklch(0.208 0.042 265.755);
+  --muted: oklch(0.968 0.007 247.896);
+  --muted-foreground: oklch(0.554 0.046 257.417);
+  --accent: oklch(0.968 0.007 247.896);
+  --accent-foreground: oklch(0.208 0.042 265.755);
+  --destructive: oklch(0.577 0.245 27.325);
+  --destructive-foreground: oklch(0.984 0.003 247.858);
+  --border: oklch(0.929 0.013 255.508);
+  --input: oklch(0.929 0.013 255.508);
+  --ring: oklch(0.704 0.04 256.788);
+  --chart-1: oklch(0.646 0.222 41.116);
+  --chart-2: oklch(0.6 0.118 184.704);
+  --chart-3: oklch(0.398 0.07 227.392);
+  --chart-4: oklch(0.828 0.189 84.429);
+  --chart-5: oklch(0.769 0.188 70.08);
+  --sidebar: oklch(0.984 0.003 247.858);
+  --sidebar-foreground: oklch(0.129 0.042 264.695);
+  --sidebar-primary: oklch(0.208 0.042 265.755);
+  --sidebar-primary-foreground: oklch(0.984 0.003 247.858);
+  --sidebar-accent: oklch(0.968 0.007 247.896);
+  --sidebar-accent-foreground: oklch(0.208 0.042 265.755);
+  --sidebar-border: oklch(0.929 0.013 255.508);
+  --sidebar-ring: oklch(0.704 0.04 256.788);
+}
+
+.dark {
+  --background: #202020;
+  --foreground: #ffffff;
+  --success: #10b981;
+  --success-soft: rgba(16, 185, 129, 0.15);
+  --warning: #f59e0b;
+  --warning-soft: rgba(245, 158, 11, 0.15);
+  --info: #ffffff;
+  --star: #ffffff;
+  --card: #282828;
+  --card-foreground: #ffffff;
+  --popover: #282828;
+  --popover-foreground: #ffffff;
+  --primary: #ffffff;
+  --primary-foreground: #202020;
+  --secondary: #2f2f2f;
+  --secondary-foreground: #ffffff;
+  --muted: #2e2e2e;
+  --muted-foreground: #a3a3a3;
+  --accent: #363636;
+  --accent-foreground: #ffffff;
+  --destructive: #ffffff;
+  --destructive-foreground: #202020;
+  --border: rgba(255, 255, 255, 0.12);
+  --input: rgba(255, 255, 255, 0.15);
+  --ring: rgba(255, 255, 255, 0.3);
+  --chart-1: #ffffff;
+  --chart-2: #cccccc;
+  --chart-3: #999999;
+  --chart-4: #666666;
+  --chart-5: #333333;
+  --sidebar: #1c1c1c;
+  --sidebar-foreground: #ffffff;
+  --sidebar-primary: #ffffff;
+  --sidebar-primary-foreground: #202020;
+  --sidebar-accent: #2e2e2e;
+  --sidebar-accent-foreground: #ffffff;
+  --sidebar-border: rgba(255, 255, 255, 0.12);
+  --sidebar-ring: rgba(255, 255, 255, 0.3);
+  color-scheme: dark;
+}
+
+/* Strict black and white typography in dark mode */
+.dark,
+.dark body,
+.dark h1,
+.dark h2,
+.dark h3,
+.dark h4,
+.dark h5,
+.dark h6,
+.dark p,
+.dark span,
+.dark a,
+.dark button,
+.dark input,
+.dark textarea,
+.dark label {
+  --tw-text-opacity: 1;
+}
+
+.dark [class*="text-emerald-"],
+.dark [class*="text-green-"],
+.dark [class*="text-blue-"],
+.dark [class*="text-sky-"],
+.dark [class*="text-indigo-"],
+.dark [class*="text-violet-"],
+.dark [class*="text-purple-"],
+.dark [class*="text-amber-"],
+.dark [class*="text-yellow-"],
+.dark [class*="text-orange-"],
+.dark [class*="text-rose-"],
+.dark [class*="text-red-"] {
+  color: #ffffff !important;
+}
+
+.dark [class*="dark:text-emerald-"],
+.dark [class*="dark:text-green-"],
+.dark [class*="dark:text-blue-"],
+.dark [class*="dark:text-sky-"],
+.dark [class*="dark:text-indigo-"],
+.dark [class*="dark:text-violet-"],
+.dark [class*="dark:text-purple-"],
+.dark [class*="dark:text-amber-"],
+.dark [class*="dark:text-yellow-"],
+.dark [class*="dark:text-orange-"],
+.dark [class*="dark:text-rose-"],
+.dark [class*="dark:text-red-"] {
+  color: #ffffff !important;
+}
+
+.dark .text-muted-foreground {
+  color: #a3a3a3 !important;
+}
+
+/* Strict black and white UI colors in dark mode: no colors, strictly monochrome */
+.dark [class*="bg-emerald-"],
+.dark [class*="bg-green-"],
+.dark [class*="bg-blue-"],
+.dark [class*="bg-sky-"],
+.dark [class*="bg-indigo-"],
+.dark [class*="bg-violet-"],
+.dark [class*="bg-purple-"],
+.dark [class*="bg-amber-"],
+.dark [class*="bg-yellow-"],
+.dark [class*="bg-orange-"],
+.dark [class*="bg-rose-"],
+.dark [class*="bg-red-"] {
+  background-color: #333333 !important;
+  color: #ffffff !important;
+  border-color: rgba(255, 255, 255, 0.15) !important;
+}
+
+.dark [class*="dark:bg-emerald-"],
+.dark [class*="dark:bg-green-"],
+.dark [class*="dark:bg-blue-"],
+.dark [class*="dark:bg-sky-"],
+.dark [class*="dark:bg-indigo-"],
+.dark [class*="dark:bg-violet-"],
+.dark [class*="dark:bg-purple-"],
+.dark [class*="dark:bg-amber-"],
+.dark [class*="dark:bg-yellow-"],
+.dark [class*="dark:bg-orange-"],
+.dark [class*="dark:bg-rose-"],
+.dark [class*="dark:bg-red-"] {
+  background-color: #333333 !important;
+  color: #ffffff !important;
+  border-color: rgba(255, 255, 255, 0.15) !important;
+}
+
+.dark [class*="border-emerald-"],
+.dark [class*="border-green-"],
+.dark [class*="border-blue-"],
+.dark [class*="border-sky-"],
+.dark [class*="border-amber-"],
+.dark [class*="border-yellow-"],
+.dark [class*="border-orange-"],
+.dark [class*="border-rose-"],
+.dark [class*="border-red-"],
+.dark [class*="dark:border-emerald-"],
+.dark [class*="dark:border-green-"],
+.dark [class*="dark:border-blue-"],
+.dark [class*="dark:border-sky-"],
+.dark [class*="dark:border-amber-"],
+.dark [class*="dark:border-yellow-"],
+.dark [class*="dark:border-orange-"],
+.dark [class*="dark:border-rose-"],
+.dark [class*="dark:border-red-"] {
+  border-color: rgba(255, 255, 255, 0.15) !important;
+}
+
+.dark [class*="fill-emerald-"],
+.dark [class*="fill-green-"],
+.dark [class*="fill-blue-"],
+.dark [class*="fill-sky-"],
+.dark [class*="fill-amber-"],
+.dark [class*="fill-rose-"],
+.dark [class*="fill-red-"],
+.dark [class*="dark:fill-emerald-"],
+.dark [class*="dark:fill-green-"],
+.dark [class*="dark:fill-rose-"] {
+  fill: #ffffff !important;
+}
+
+/* In dark mode, primary action buttons use crisp high-contrast white */
+.dark button.bg-emerald-600,
+.dark button.bg-emerald-700,
+.dark a.bg-emerald-600,
+.dark a.bg-emerald-700 {
+  background-color: #ffffff !important;
+  color: #202020 !important;
+}
+
+.dark button.bg-rose-600,
+.dark button.bg-rose-700,
+.dark a.bg-rose-600,
+.dark a.bg-rose-700 {
+  background-color: #282828 !important;
+  color: #ffffff !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+}
+
+/* Dark mode ambient glow/blurs neutralized */
+.dark .bg-emerald-500\/10,
+.dark .bg-sky-500\/10,
+.dark .bg-amber-500\/10,
+.dark .bg-rose-500\/10 {
+  display: none !important;
+}
+
+@layer base {
+  * {
+    border-color: var(--color-border);
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  *::-webkit-scrollbar {
+    display: none;
+    width: 0px;
+    height: 0px;
+  }
+
+  body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    font-family: var(--font-sans);
+    -webkit-tap-highlight-color: transparent;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  body::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/* Animated Checkmark Keyframes */
+@keyframes checkmark-circle {
+  0% {
+    stroke-dashoffset: 280;
+    transform: scale(0.7);
+    opacity: 0;
+  }
+  50% {
+    stroke-dashoffset: 0;
+    transform: scale(1.05);
+    opacity: 1;
+  }
+  100% {
+    stroke-dashoffset: 0;
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes checkmark-check {
+  0% {
+    stroke-dashoffset: 100;
+    opacity: 0;
+  }
+  40% {
+    stroke-dashoffset: 100;
+    opacity: 0;
+  }
+  100% {
+    stroke-dashoffset: 0;
+    opacity: 1;
+  }
+}
+
+.animate-checkmark-circle {
+  stroke-dasharray: 280;
+  stroke-dashoffset: 280;
+  animation: checkmark-circle 0.75s cubic-bezier(0.65, 0, 0.45, 1) forwards;
+  transform-origin: center;
+}
+
+.animate-checkmark-check {
+  stroke-dasharray: 100;
+  stroke-dashoffset: 100;
+  animation: checkmark-check 0.85s cubic-bezier(0.65, 0, 0.45, 1) 0.3s forwards;
+}

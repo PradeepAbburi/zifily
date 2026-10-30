@@ -1,0 +1,111 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Default-deny catch-all
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return isSignedIn() && request.auth.uid == userId;
+    }
+
+    function isValidId(id) {
+      return id is string && id.size() > 0 && id.size() <= 128;
+    }
+
+    function incoming() {
+      return request.resource.data;
+    }
+
+    function existing() {
+      return resource.data;
+    }
+
+    // --- Users Collection ---
+    match /users/{userId} {
+      allow get: if isOwner(userId);
+      allow list: if isSignedIn() && resource.data.userId == request.auth.uid;
+      allow create: if isOwner(userId)
+        && incoming().userId == userId
+        && incoming().email is string
+        && incoming().email.size() <= 256
+        && incoming().role in ['client', 'provider'];
+      allow update: if isOwner(userId)
+        && incoming().userId == existing().userId
+        && incoming().email == existing().email
+        && (!('role' in incoming()) || incoming().role == existing().role);
+      allow delete: if isOwner(userId);
+    }
+
+    // --- Providers Collection ---
+    match /providers/{providerId} {
+      // Anyone can browse provider profiles
+      allow read: if true;
+      allow create: if isSignedIn()
+        && incoming().providerId is string
+        && incoming().name is string
+        && incoming().name.size() <= 100
+        && incoming().category is string;
+      allow update: if isSignedIn()
+        && (incoming().providerId == existing().providerId)
+        && (!('userId' in existing()) || existing().userId == request.auth.uid);
+      allow delete: if isSignedIn() && existing().userId == request.auth.uid;
+    }
+
+    // --- Bookings Collection ---
+    match /bookings/{bookingId} {
+      allow read: if isSignedIn() && (
+        resource.data.clientId == request.auth.uid ||
+        resource.data.providerId == request.auth.uid ||
+        resource.data.providerUserId == request.auth.uid
+      );
+      allow create: if isSignedIn()
+        && incoming().clientId == request.auth.uid
+        && incoming().bookingId is string
+        && incoming().serviceTitle is string
+        && incoming().serviceTitle.size() <= 150
+        && incoming().status in ['Pending', 'Confirmed', 'Completed', 'Cancelled'];
+      allow update: if isSignedIn() && (
+        existing().clientId == request.auth.uid ||
+        existing().providerId == request.auth.uid ||
+        existing().providerUserId == request.auth.uid
+      );
+      allow delete: if isSignedIn() && (
+        existing().clientId == request.auth.uid ||
+        existing().providerId == request.auth.uid
+      );
+    }
+
+    // --- Chat Messages ---
+    match /messages/{messageId} {
+      allow read: if isSignedIn() && (
+        resource.data.senderId == request.auth.uid ||
+        resource.data.recipientId == request.auth.uid ||
+        resource.data.conversationId is string
+      );
+      allow create: if isSignedIn()
+        && incoming().senderId == request.auth.uid
+        && (!('text' in incoming()) || incoming().text is string);
+      allow update: if isSignedIn() && (
+        // Allow updating read status, reactions, or offer status
+        (incoming().diff(existing()).affectedKeys().hasOnly(['read'])) ||
+        (incoming().diff(existing()).affectedKeys().hasOnly(['reactions'])) ||
+        (incoming().diff(existing()).affectedKeys().hasOnly(['offerStatus', 'counterPrice']))
+      );
+      allow delete: if isSignedIn() && existing().senderId == request.auth.uid;
+    }
+
+    // --- Notifications ---
+    match /notifications/{notificationId} {
+      allow read: if isSignedIn() && resource.data.userId == request.auth.uid;
+      allow create: if isSignedIn();
+      allow update: if isSignedIn() && existing().userId == request.auth.uid;
+      allow delete: if isSignedIn() && existing().userId == request.auth.uid;
+    }
+  }
+}

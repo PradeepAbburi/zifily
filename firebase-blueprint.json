@@ -1,0 +1,122 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "Registered client or service provider user profile",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string", "maxLength": 128 },
+        "email": { "type": "string", "maxLength": 256 },
+        "displayName": { "type": "string", "maxLength": 100 },
+        "role": { "type": "string", "enum": ["client", "provider"] },
+        "phone": { "type": "string", "maxLength": 30 },
+        "address": { "type": "string", "maxLength": 200 },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["userId", "email", "role"]
+    },
+    "ProviderProfile": {
+      "title": "ProviderProfile",
+      "description": "Public provider or expert business profile",
+      "type": "object",
+      "properties": {
+        "providerId": { "type": "string", "maxLength": 128 },
+        "userId": { "type": "string", "maxLength": 128 },
+        "name": { "type": "string", "maxLength": 100 },
+        "title": { "type": "string", "maxLength": 120 },
+        "category": { "type": "string", "maxLength": 80 },
+        "description": { "type": "string", "maxLength": 1000 },
+        "area": { "type": "string", "maxLength": 100 },
+        "rating": { "type": "number" },
+        "reviews": { "type": "number" },
+        "hourlyRate": { "type": "string", "maxLength": 40 },
+        "isAvailable": { "type": "boolean" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["providerId", "name", "category"]
+    },
+    "Booking": {
+      "title": "Booking",
+      "description": "Client booking record with a provider",
+      "type": "object",
+      "properties": {
+        "bookingId": { "type": "string", "maxLength": 128 },
+        "clientId": { "type": "string", "maxLength": 128 },
+        "clientName": { "type": "string", "maxLength": 100 },
+        "clientEmail": { "type": "string", "maxLength": 256 },
+        "providerId": { "type": "string", "maxLength": 128 },
+        "providerName": { "type": "string", "maxLength": 100 },
+        "serviceTitle": { "type": "string", "maxLength": 150 },
+        "date": { "type": "string", "maxLength": 20 },
+        "time": { "type": "string", "maxLength": 20 },
+        "address": { "type": "string", "maxLength": 250 },
+        "notes": { "type": "string", "maxLength": 1000 },
+        "status": { "type": "string", "enum": ["Pending", "Confirmed", "Completed", "Cancelled"] },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["bookingId", "clientId", "providerId", "serviceTitle", "date", "status"]
+    },
+    "ChatMessage": {
+      "title": "ChatMessage",
+      "description": "Chat message exchanged between client and provider",
+      "type": "object",
+      "properties": {
+        "messageId": { "type": "string", "maxLength": 128 },
+        "conversationId": { "type": "string", "maxLength": 128 },
+        "senderId": { "type": "string", "maxLength": 128 },
+        "recipientId": { "type": "string", "maxLength": 128 },
+        "senderName": { "type": "string", "maxLength": 100 },
+        "text": { "type": "string", "maxLength": 2000 },
+        "type": { "type": "string", "enum": ["text", "image", "file", "offer"] },
+        "mediaUrl": { "type": "string", "maxLength": 2000000 },
+        "mediaType": { "type": "string", "maxLength": 50 },
+        "fileName": { "type": "string", "maxLength": 255 },
+        "fileSize": { "type": "string", "maxLength": 50 },
+        "read": { "type": "boolean" },
+        "reactions": { "type": "object", "description": "Emoji reactions map" },
+        "offerPrice": { "type": "string", "maxLength": 50 },
+        "offerStatus": { "type": "string", "maxLength": 30 },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["conversationId", "senderId"]
+    },
+    "Notification": {
+      "title": "Notification",
+      "description": "User notification update",
+      "type": "object",
+      "properties": {
+        "notificationId": { "type": "string", "maxLength": 128 },
+        "userId": { "type": "string", "maxLength": 128 },
+        "title": { "type": "string", "maxLength": 120 },
+        "message": { "type": "string", "maxLength": 500 },
+        "type": { "type": "string", "enum": ["booking", "message", "system", "promo"] },
+        "isRead": { "type": "boolean" },
+        "link": { "type": "string", "maxLength": 200 },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["notificationId", "userId", "title", "message", "isRead"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "User",
+      "description": "User account documents keyed by auth UID"
+    },
+    "/providers/{providerId}": {
+      "schema": "ProviderProfile",
+      "description": "Service provider and expert profiles"
+    },
+    "/bookings/{bookingId}": {
+      "schema": "Booking",
+      "description": "Service appointments and booking orders"
+    },
+    "/messages/{messageId}": {
+      "schema": "ChatMessage",
+      "description": "Chat and consultation message threads"
+    },
+    "/notifications/{notificationId}": {
+      "schema": "Notification",
+      "description": "User notification logs"
+    }
+  }
+}
